@@ -1,0 +1,25 @@
+This is an USB Host Mass Storage and File System example.
+
+After the USB Flash memory stick is connected it creates/overwrites 
+a file with name "Test.txt" and content "USB Host Mass Storage!".
+
+Board:                  Keil 'MCBSTM32C'
+Microcontroller:        ST   'STM32F107'
+Clock Settings:         XTAL   = 25 MHz
+                        CPUCLK = 72 MHz
+                        USBCLK = 48 MHz
+User Interface:         none
+
+Detailed description is available on:
+http://www.keil.com/pack/doc/MW/USB/html/host_msc_tutorial.html
+
+The program is available for target(s):
+
+  - STM32F107 Flash: Downloads to and executes from internal Flash
+
+IMPORTAINT !!! Voltage on Vin pins should be in range from 5.25 to 5.5 V.
+           Do not exceed 5.5V !!!
+
+Notes:   - Cable necessary for connecting USB memory device should have 
+           USB micro-A plug connector on one side and Standard USB Type-A 
+           receptacle connector on the other side.

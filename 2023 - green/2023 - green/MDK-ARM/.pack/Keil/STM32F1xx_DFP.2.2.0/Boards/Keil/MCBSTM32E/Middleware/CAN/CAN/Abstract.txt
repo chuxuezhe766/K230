@@ -1,0 +1,17 @@
+This is an CAN example that sends and receives 8 byte data messages.
+Loopback mode is selected by default so it does not need physical loopback
+for demonstration. It sends messages to itself internally and to the CAN bus
+so transmitted messages can be captured on the CAN bus also.
+
+Board:                  Keil     'MCBSTM32E'
+Microcontroller:        STM      'STM32F103'
+Clock Settings:         XTAL       =   8 MHz
+                        CPUCLK     =  72 MHz
+                        APB1CLK    =  36 MHz (used for CAN controller)
+CAN1 Interface:         bit rate 125 kbit/s
+User Interface:         input:  none
+                        output: SWO + Graphic LCD
+
+The program is available for target(s):
+
+  - STM32F103 Flash: Downloads to and executes from internal Flash

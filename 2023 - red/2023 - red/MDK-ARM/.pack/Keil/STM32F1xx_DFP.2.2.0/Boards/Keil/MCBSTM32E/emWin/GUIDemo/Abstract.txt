@@ -1,0 +1,5 @@
+This is a emWin Graphic Library Demo for the Keil MCBSTM32E Evaluation Board.
+
+Targets:
+  MCBSTM32E:        MCBSTM32E Board
+  MCBSTM32E LCD_LG: MCBSTM32E Board with newer LCD (Ampire 240320LG)

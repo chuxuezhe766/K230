@@ -1,0 +1,17 @@
+This is a File System file manipulation example.
+You can create, read, copy and delete files on any enabled
+drive (SD/MMC Card) and format the drive.
+
+Detailed description is available on:
+www.keil.com/pack/doc/MW/FileSystem/html/fs_examples.html#fs_standalone_example
+
+The File_Demo program is a standalone application loaded into
+on-chip flash and available for one target:
+
+STM32F103 Flash:
+    Standalone application for MCBSTM32E Evaluation Board
+    using ITM debug port as a communication interface.
+
+    You can test it with ULINK2 from uVision Debug Session:
+    Start Debug session (Ctrl + F5) and open Debug (printf)
+    Viewer (View->Serial Windows->Debug (printf) Viewer).

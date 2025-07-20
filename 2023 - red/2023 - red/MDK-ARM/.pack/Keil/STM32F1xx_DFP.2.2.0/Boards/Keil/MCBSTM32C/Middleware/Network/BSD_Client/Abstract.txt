@@ -1,0 +1,19 @@
+This program is a BSD_Client example. It is used to send commands
+to a BSD_Server or LEDSwitch server connected on the same LAN.
+
+In order to run this example, you need to set the network parameters
+to match your local area network.
+
+To test this example, you need also a server application to connect to.
+Download and run a BSD_Server example on a different evaluation
+board connected to the same LAN. When BSD_Client is running, LED diodes on
+both evaluation boards should light in sync.
+
+NOTE: IP address and MAC address of this example must be set different
+      from IP and MAC addresses on BSD_Server.
+
+The BSD_Client example is available for one target:
+
+STM32F107 Flash:
+    Standalone application for MCBSTM32C Board.
+    Program code is loaded into on-chip flash.

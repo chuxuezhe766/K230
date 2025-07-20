@@ -1,0 +1,21 @@
+This is an HID example that demonstrates Human Interface Device (HID)
+on USB Device.
+
+Detailed description is available on:
+www.keil.com/pack/doc/MW/USB/html/dev_hid_tutorial.html
+
+Board:                  Keil 'MCBSTM32C'
+Microcontroller:        ST   'STM32F107'
+Clock Settings:         XTAL   = 25 MHz
+                        CPUCLK = 72 MHz
+                        USBCLK = 48 MHz
+User Interface:         inputs:  Joystick
+                        outputs: LEDs
+
+The example demonstrates a Human Interface Device. The board LEDs and 
+Joystick can be accessed from the PC through a custom 
+HID Client Program (.\ARM\Utilities\HID_Client\Release\HIDClient.exe).
+
+The program is available for target(s):
+
+  - STM32F107 Flash: Downloads to and executes from internal Flash

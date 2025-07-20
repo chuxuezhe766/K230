@@ -1,0 +1,35 @@
+This program is a SMTP_Client example. It shows you how to send emails
+from an embedded application.
+
+Detailed description is available on:
+www.keil.com/pack/doc/MW/Network/html/_s_m_t_p__client__example.html
+
+Use this example to connect an evaluation board to a LAN with DHCP
+server (most LANs have this). The example will configure the network
+parameters automatically using a DHCP protocol.
+
+If a DHCP server is not available, you need to configure the network
+parameters manually in Net_Config_ETH_#.h configuration file. You have to
+disable also a 'Dynamic Host Configuration'.
+
+WARNING!!!
+
+You need to modify SMTP_Client_UIF.c user interface and enter:
+ - sender email address,
+ - recipient email address,
+ - email subject,
+
+and optionally for external SMTP authentication:
+ - SMTP username,
+ - SMTP password.
+
+Modify also the SMTP_Client.c and enter:
+ - SMTP server IP address.
+
+Sent email will have about 40 kBytes.
+
+The SMTP_Client example is available for one target:
+
+STM32F107 Flash:
+    Standalone application for MCBSTM32C Board.
+    Program code is loaded into on-chip flash.

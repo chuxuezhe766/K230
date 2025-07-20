@@ -1,0 +1,31 @@
+This is a Telnet_Server example running on Network Dual Stack.
+
+Detailed description is available on:
+www.keil.com/pack/doc/MW/Network/html/_telnet__example.html
+
+Use this example to connect an evaluation board to a LAN with router.
+You may also connect an evaluation board to PC directly using a direct
+or crosslink network cable.
+To connect to the telnet server you can use auto-assigned IPv6 address,
+IPv4 address assigned by the DHCP server or NBNS resolved local host name.
+
+To test this example, run a telnet client on your PC. If you are using
+Windows telnet client, you can connect using the following command in
+the console window:
+
+> telnet mcbstm32c  or
+> telnet <ip4 address> or
+> telnet <ip6 address>
+
+IPv4 and IPv6 addresses are printed on display of evaluation board.
+
+Default user    : admin
+Default password: <none>
+
+Type 'help' to see the available commands or 'bye' to disconnect.
+
+The Telnet_Server example is available for one target:
+
+STM32F107 Flash:
+    Standalone application for MCBSTM32C Board.
+    Program code is loaded into on-chip flash.

@@ -1,0 +1,37 @@
+The 'Blinky' project is a simple CMSIS RTOS based example for
+STMicroelectronics 'STM32F103ZE' microcontroller using Keil 'MCBSTM32E' Evaluation Board,
+compliant to Cortex Microcontroller Software Interface Standard (CMSIS v2.0).
+
+Example functionality:
+ - Clock Settings:
+   - XTAL    =            8.00 MHz
+   - SYSCLK  =           72.00 MHz
+   - HCLK    = SYSCLK  = 72.00 MHz
+
+ - LEDs are blinking as running light
+ - blinking speed depends on potentiometer position
+ - blinking is paused while holding down the USER button
+ 
+
+The Blinky program is available in different targets:
+                    
+  STM32F103 RAM:    configured for on-chip RAM
+                    (used for target debugging)
+
+  STM32F103 Flash:  runs from Internal Flash located on chip
+                    (used for production or target debugging)
+
+  STM32F103 Flash + ULP:  runs from Internal Flash located on chip
+                    configured for ULink-Pro and ETM based Instruction Trace
+                    (used for production or target debugging)
+
+ULINKpro notes
+--------------
+STM32F1xx_TP.ini enables synchronous 4bit Trace Interface
+ETM Trace pins:  TRACECK         PE2
+                 TRACED0..3      PE3..PE6    (4 bit trace data)
+                 do not use these pins in your application!
+
+Instruction trace is very time and resource consuming
+therefore if you want to use instruction trace use
+nothing else (no LA, no exceptions, no ITM, no ...).

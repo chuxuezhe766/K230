@@ -1,0 +1,75 @@
+This is an Virtual COM example that demonstrates Communication Device Class (CDC)
+Abstract Control Model (ACM) on USB Device.
+
+It demonstrates a bridge between USB Virtual COM Port and UART port on the
+evaluation board.
+
+Detailed description is available on:
+www.keil.com/pack/doc/MW/USB/html/dev_cdc_tutorial.html
+
+Board:                  Keil 'MCBSTM32E'
+Microcontroller:        ST   'STM32F103'
+Clock Settings:         XTAL   = 25 MHz
+                        CPUCLK = 72 MHz
+                        USBCLK = 48 MHz
+Bridge functionality:   USB <-> UART2 (COM0)
+
+The PC will install a Virtual COM Port on the PC (see Driver Installation).
+After installation an additional port "MCBSTM32E USB VCOM Port(COMx)"
+can be found under System/Hardware/Device Manager/Ports(COM&LPT).
+Number "x" is not fixed as different PC configuration may have different
+"x" displayed in the device manager. The USB Host driver assigns "x"
+dynamically based on the existing COM port configuration in the system.
+
+Testing the USB Virtual COM Port:
+
+  Connect USB Host PC with USB cable to USB connector on the embedded board.
+  Connect PC UART Port with UART cable to COM0 connector on the embedded board.
+  Open two Serial Terminal applications in Windows:
+    -  one with "MCBSTM32E USB VCOM Port(COMx)"
+    -  one with PC UART Port
+  Data sent from one Serial Terminal application should be received in other and vice versa.
+
+The program is available for target(s):
+
+  - STM32F107 Flash: Downloads to and executes from internal Flash
+
+Important Note: MCBSTM32E does have routed flow control pins on the UART
+                but resistor R35 is not populated thus this example does
+                not use flow control so it is possible that this example
+                will loose characters because of not using flow control
+
+
+Driver Files:
+-------------
+    - mcbstm32e-vcom.inf       : Driver setup information.
+    - mcbstm32e-vcom_x86.cat   : Digitally signed driver catalog file for
+                                 32-bit Host PCs.
+    - mcbstm32e-vcom_amd64.cat : Digitally signed driver catalog file for
+                                 64-bit Host PCs.
+
+Note : Digitally signing of the driver catalog file is required to install
+drivers on 64-bit PCs using Windows Vista or later Windows versions. Please
+refer to Microsoft documentation for further information.
+
+
+Driver Installation:
+--------------------
+     "Welcome to the Found New Hardware Wizard" appears
+     - select 'No, not this time'
+     - press  'Next'
+
+     - select 'Install from a list or specific location (Advanced)'
+     - press  'Next'
+
+     - select 'Search for the best driver in these locations'
+     - check  'include this location in the search'
+     - set to <project folder>
+     - press 'Next'
+
+     "Hardware Installation" appears
+     "has not passed Windows Logo testing..."
+     - press 'Continue Anyway'
+
+     "Completing the Found New Hardware Wizard" appears
+     - press 'Finish'

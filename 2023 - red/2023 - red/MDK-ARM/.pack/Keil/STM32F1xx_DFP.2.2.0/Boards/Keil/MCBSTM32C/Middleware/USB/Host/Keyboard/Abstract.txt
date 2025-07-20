@@ -1,0 +1,26 @@
+This is an USB Host HID Keyboard example.
+
+After the USB HID keyboard is connected it displays 
+pressed characters on standard output.
+
+Board:                  Keil 'MCBSTM32C'
+Microcontroller:        ST   'STM32F107'
+Clock Settings:         XTAL   = 25 MHz
+                        CPUCLK = 72 MHz
+                        USBCLK = 48 MHz
+User Interface:         input:  USB HID Keyboard
+                        output: Graphic LCD
+
+Detailed description is available on:
+http://www.keil.com/pack/doc/MW/USB/html/host_hid_tutorial.html
+
+The program is available for target(s):
+
+  - STM32F107 Flash: Downloads to and executes from internal Flash
+
+IMPORTAINT !!! Voltage on Vin pins should be in range from 5.25 to 5.5 V.
+           Do not exceed 5.5V !!!
+
+Notes:   - Cable necessary for connecting USB Keyboard should have 
+           USB micro-A plug connector on one side and Standard USB Type-A 
+           receptacle connector on the other side.

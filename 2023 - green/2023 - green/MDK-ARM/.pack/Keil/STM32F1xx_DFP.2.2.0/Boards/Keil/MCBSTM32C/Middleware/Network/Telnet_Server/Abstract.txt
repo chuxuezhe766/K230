@@ -1,0 +1,32 @@
+This program is a Telnet_Server example. It shows how to build a
+simple IP based command line interface. 
+
+Detailed description is available on:
+www.keil.com/pack/doc/MW/Network/html/_telnet__example.html
+
+Use this example to connect an evaluation board to a LAN with DHCP
+server (most LANs have this). This example will configure the network
+parameters automatically using a DHCP protocol.
+
+If a DHCP server is not available, you may connect an evaluation
+board to PC directly over a crosslink network cable. In this case
+configure a PC to use a static IP address 192.168.0.1 and disable
+a 'Dynamic Host Configuration' in Net_Config.c configuration file.
+The default static IP address of this example is then 192.168.0.100
+
+To test this example you need to run a telnet client on your PC.
+If you do not have installed a special telnet client software, you can
+run the Windows telnet client from a console window.
+
+From the console window type:  telnet mcbstm32c
+
+Default user    : admin
+Default password: <none>
+
+Type 'help' to see the available commands or 'bye' to disconnect.
+
+The Telnet_Server example is available for one target:
+
+STM32F107 Flash:
+    Standalone application for MCBSTM32C Board.
+    Program code is loaded into on-chip flash.

@@ -1,0 +1,22 @@
+This is an CAN example that demonstrates Remote Transmission Request (RTR) usage.
+There are 2 targets available, one is used for device acting as Consumer meaning
+it periodically sends RTR and receives data response, other target is used for
+device acting as Producer meaning it receives RTR and transmits data response.
+This example requires 2 boards to show it's functionality. One device should be
+programmed as Consumer the other as Producer and then they should be connected
+through CAN bus to see example functionality.
+
+Board:                  Keil     'MCBSTM32E'
+Microcontroller:        STM      'STM32F103'
+Clock Settings:         XTAL       =   8 MHz
+                        CPUCLK     =  72 MHz
+                        APB1CLK    =  36 MHz (used for CAN controller)
+CAN:                    CAN1 at 125 kbit/s
+User Interface:         input:  none
+                        output: Graphic LCD
+
+The program is available for target(s):
+- targets download to and execute from internal Flash
+
+  - STM32F103 - Consumer: It transmits RTR periodically and receives data response
+  - STM32F103 - Producer: It receives RTR and transmits data response

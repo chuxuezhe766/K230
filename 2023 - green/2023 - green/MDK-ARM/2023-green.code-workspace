@@ -1,0 +1,14 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "files.associations": {
+            "stdint.h": "c",
+            "dma.h": "c"
+        }
+    },
+    "extensions": {}
+}
