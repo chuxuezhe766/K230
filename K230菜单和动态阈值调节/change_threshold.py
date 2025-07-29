@@ -1,20 +1,19 @@
 import time, os, gc
+import json
 from media.sensor import Sensor, CAM_CHN_ID_0
 from media.display import *
 from media.media import *
 from machine import TOUCH
 from ybUtils.YbKey import YbKey
 
-#由外部传入阈值
 def run_threshold_ui(sensor, tp, key, key_esc, thresholds,
                      WIDTH=640, HEIGHT=480):
-
+    # 保留原始传入阈值的备份
     original_thresholds = [row[:] for row in thresholds]
-    #初始阈值
-    thresholds = [
-        [0, 100, -128, 127, -128, 127],  # 第一组
-        [0, 100, -128, 127, -128, 127]   # 第二组
-    ]
+
+    # 内部使用的阈值（使用传入的阈值作为初始值）
+    working = [row[:] for row in thresholds]
+
     current_group = 0
 
     value_labels = ["Lmin", "Lmax", "Amin", "Amax", "Bmin", "Bmax"]
@@ -94,7 +93,7 @@ def run_threshold_ui(sensor, tp, key, key_esc, thresholds,
     def is_point_in_button(x, y, btn_x, btn_y, btn_w, btn_h):
         return btn_x <= x <= btn_x + btn_w and btn_y <= y <= btn_y + btn_h
 
-    def draw_botton(img, x, y, w, h, color, text="", text_color=(255,0,0), font_size=20, center_text=False):
+    def draw_botton(img, x, y, w, h, color, text="", text_color=(255,0,0), font_size=20, center_text=False):#by kongcheng
         img.draw_rectangle(x, y, w, h, color=color, thickness=2)
         if text:
             if center_text:
@@ -105,6 +104,24 @@ def run_threshold_ui(sensor, tp, key, key_esc, thresholds,
             ty = y + (h - font_size) // 2
             img.draw_string_advanced(tx, ty, font_size, text, color=text_color)
 
+    def sync_working_to_thresholds():
+        """同步working到thresholds"""
+        for i in range(len(thresholds)):
+            for j in range(len(thresholds[i])):
+                thresholds[i][j] = working[i][j]
+
+    #保存到了thresholds.json这个文件
+    def save_thresholds_to_sd():
+        """保存阈值到SD卡"""
+        try:
+            with open('/sdcard/thresholds.json', 'w') as f:
+                json.dump(thresholds, f)
+            print("阈值已保存到SD卡")
+            return True
+        except Exception as e:
+            print(f"保存阈值到SD卡失败: {e}")
+            return False
+
     show_binary = False
     last_touch = False
     save_hint_counter = 0
@@ -114,19 +131,26 @@ def run_threshold_ui(sensor, tp, key, key_esc, thresholds,
         # 一键退出
         if key_esc.is_pressed():
             time.sleep(0.05)
+            # 确保退出时同步working到thresholds并保存到SD卡
+            sync_working_to_thresholds()
+            save_thresholds_to_sd()
             return thresholds
 
         if show_binary:
-            threshold_tuple = tuple(thresholds[current_group])
+            threshold_tuple = tuple(working[current_group])
             img.binary([threshold_tuple])
 
         if key.is_pressed():
             time.sleep(0.1)
             while key.is_pressed():
                 time.sleep(0.1)
-            original_thresholds[current_group] = thresholds[current_group][:]
-            print(f"已保存当前组{current_group+1}的阈值为原始阈值")
-            save_hint_counter = 30
+            # 把内部调节的阈值覆盖传入的阈值参数
+            sync_working_to_thresholds()
+            print("已保存到外部阈值")
+
+            # 保存到SD卡
+            if save_thresholds_to_sd():
+                save_hint_counter = 30
 
         points = tp.read(1)
         touch_point = points[0] if points else None
@@ -137,7 +161,7 @@ def run_threshold_ui(sensor, tp, key, key_esc, thresholds,
                 x, y, w, h = btn['rect']
                 if is_point_in_button(touch_point.x, touch_point.y, x, y, w, h):
                     if action == "switch":
-                        current_group = (current_group + 1) % len(thresholds)
+                        current_group = (current_group + 1) % len(working)
                         print(f"切换到第{current_group+1}组")
                         time.sleep_ms(100)
                     elif action == "toggle_display":
@@ -145,6 +169,9 @@ def run_threshold_ui(sensor, tp, key, key_esc, thresholds,
                         print(f"切换显示模式，当前为{'阈值处理' if show_binary else '原始画面'}")
                         time.sleep_ms(100)
                     elif action == "exit":
+                        # 在退出时也保存阈值
+                        sync_working_to_thresholds()
+                        save_thresholds_to_sd()
                         return thresholds
                     break
 
@@ -157,10 +184,10 @@ def run_threshold_ui(sensor, tp, key, key_esc, thresholds,
                         color = btn['pressed_color']
                         index, change = btn['action']
                         min_val, max_val = threshold_ranges[index]
-                        new_val = thresholds[current_group][index] + change
+                        new_val = working[current_group][index] + change
                         new_val = max(min_val, min(max_val, new_val))
-                        thresholds[current_group][index] = new_val
-                        print(f"阈值更新: {value_labels[index]} = {thresholds[current_group][index]}")
+                        working[current_group][index] = new_val
+                        print(f"阈值更新: {value_labels[index]} = {working[current_group][index]}")
                         time.sleep_ms(100)
 
         for btn in buttons:
@@ -175,7 +202,7 @@ def run_threshold_ui(sensor, tp, key, key_esc, thresholds,
         gap_x = 74
         y = HEIGHT - 40
         for i, label in enumerate(value_labels):
-            display_text = f"{label}: {thresholds[current_group][i]}"
+            display_text = f"{label}: {working[current_group][i]}"
             img.draw_string_advanced(start_x + i * gap_x, y, 15, display_text, color=(173, 216, 230))
             orig_text = f"{original_thresholds[current_group][i]}"
             img.draw_string_advanced(start_x + i * gap_x, y + 18, 15, orig_text, color=(255, 0, 0))

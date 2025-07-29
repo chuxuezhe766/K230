@@ -1,4 +1,5 @@
 import time, os, gc
+import json
 import image
 from media.sensor import Sensor, CAM_CHN_ID_0
 from media.display import *
@@ -10,6 +11,7 @@ from ybUtils.YbUart import YbUart
 #加入自己写的函数
 from change_threshold import run_threshold_ui
 from get_rect_ui import run_get_rect
+from find_color import find_color_app
 #分辨率
 WIDTH, HEIGHT = 640, 480
 #按键
@@ -29,11 +31,35 @@ MediaManager.init()
 sensor.run()
 #触屏初始化
 tp  = TOUCH(0)
-#自定义阈值
-MY_THRESHOLDS = [
+
+# 默认阈值设为0
+DEFAULT_THRESHOLDS = [
     [0, 0, 0, 0, 0, 0],
-    [0, 100, -128, 127, -128, 127]
+    [0, 0, 0, 0, 0, 0]
 ]
+
+# 从SD卡读取阈值
+def load_thresholds_from_sd():
+    try:
+        with open('/sdcard/thresholds.json', 'r') as f:
+            thresholds = json.load(f)
+        # 验证数据完整性
+        if (isinstance(thresholds, list) and len(thresholds) == 2 and
+            all(isinstance(group, list) and len(group) == 6 for group in thresholds)):
+            print("从SD卡加载阈值:", thresholds)
+            return thresholds
+        else:
+            print("阈值文件格式不正确，使用默认阈值")
+            return DEFAULT_THRESHOLDS.copy()
+    except OSError:
+        print("未找到阈值文件，使用默认阈值")
+        return DEFAULT_THRESHOLDS.copy()
+    except Exception as e:
+        print(f"读取阈值文件出错: {e}，使用默认阈值")
+        return DEFAULT_THRESHOLDS.copy()
+
+#自定义阈值
+MY_THRESHOLDS = load_thresholds_from_sd()
 
 def draw_touch_btn(img, tp,
                    x, y, w, h,
@@ -69,19 +95,30 @@ while True:
 
     #自定义触屏按键，自己加
     if draw_touch_btn(img, tp,
-                      10, y=10,
+                      x=10, y=10,
                       w=200, h=200,
                       text="LAB设置",
                       font_size=25):
         print("进入阈值调节")
-        run_threshold_ui(sensor, tp, key, key_esc, MY_THRESHOLDS, WIDTH, HEIGHT)
+        # 每次进入阈值调节时重新加载阈值，确保获取最新的值
+        current_thresholds = load_thresholds_from_sd()
+        run_threshold_ui(sensor, tp, key, key_esc, current_thresholds, WIDTH, HEIGHT)
+        # 更新全局阈值变量
+        MY_THRESHOLDS[:] = current_thresholds
     if draw_touch_btn(img, tp,
-                      250, y=10,
+                      x=230, y=10,
                       w=200, h=200,
                       text="模式1",
                       font_size=25):
         print("进入模式1")
-        run_get_rect(sensor, key_main, key_aux, key_esc, uart)
+        run_get_rect(sensor, key_main, key_aux, key_esc, uart, WIDTH, HEIGHT)
+    if draw_touch_btn(img, tp,
+                      x=450, y=10,
+                      w=190, h=200,
+                      text="模式2",
+                      font_size=25):
+        print("进入模式2")
+        find_color_app(sensor, key_main, key_aux, key_esc, MY_THRESHOLDS, uart)
 
     Display.show_image(img)
     gc.collect()
